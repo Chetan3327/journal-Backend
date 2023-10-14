@@ -25,7 +25,7 @@ let contacts = [
     Phone: "(011) 2757 2900",
   },
   {
-    id: 1,
+    id: 2,
     Name: "Dr. Narina Thakur",
     Title: "Managing Editor",
     Bodh: "BODH: BPIT International Journal of Technology and Management",
