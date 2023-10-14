@@ -7,7 +7,11 @@ const path = require("path");
 // app.use(express.static("public"));
 require("dotenv").config();
 app.use(express.json());
-app.use(cors());
+app.use(
+  cors({
+    origin: "*",
+  })
+);
 const mongoose = require("mongoose");
 mongoose.connect(`${process.env.mongourl}`, {
   useNewUrlParser: true,
