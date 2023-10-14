@@ -35,7 +35,7 @@ let contacts = [
     Phone: "0000000000",
   },
 ];
-contacts = contacts.json();
+
 const mongoose = require("mongoose");
 mongoose.connect(`${process.env.mongourl}`, {
   useNewUrlParser: true,
