@@ -13,92 +13,133 @@ app.use(
   })
 );
 
+const routes = require("./routes"); // Assuming your route file is in the same directory
+
+// Use the external routes
+app.use("/", routes);
+const schema = require("./schema");
+
 const mongoose = require("mongoose");
-const { warn } = require("console");
+
 mongoose.connect(`${process.env.mongourl}`, {
   useNewUrlParser: true,
 });
-
-const schema = {
-  Que: String,
-  Ans: String,
-};
-
-const faqs = mongoose.model("BPITJOURNAL", schema);
-
-const advisory_board = {
-  Name: String,
-  Designation: String,
-  Institute: String,
-  position: String,
-};
-
-const adv_board = mongoose.model("advisory_board", advisory_board);
-
-const issues = {
-  Title: String,
-  Author: String,
-  Year: Number,
-};
-
-const issue = mongoose.model("Issues", issues);
-
-const memberschema = {
-  Name: String,
-  Designation: String,
-  Institute: String,
-};
-
-const members = mongoose.model("Members", memberschema);
-
-const contacts = {
-  Name: String,
-  Title: String,
-  Bodh: String,
-  Designation: String,
-  Email: String,
-  Phone: String,
-};
-
-const contact = mongoose.model("Contacts", contacts);
-
-const eboard = {
-  Name: String,
-  Title: String,
-  Area_of_Specialization: String,
-  Designation: String,
-  Institute: String,
-  Email: String,
-};
-
-const editorial_board = mongoose.model("Editorial_board", eboard);
 
 // data.editorial_board.forEach((element) => {
 //   let a = new editorial_board(element);
 //   a.save();
 // });
 
-app.get("/", (req, res) => {
-  const status = {
-    Status: "Running",
-  };
+// app.get("/contacts", (req, res) => {
+//   contact.find().then(function (foundItems) {
+//     res.send(foundItems);
+//   });
+// });
 
-  res.send(status);
+const faqs = mongoose.model("BPITJOURNAL", schema.schema);
+
+const adv_board = mongoose.model("advisory_board", schema.advisory_board);
+
+const issue = mongoose.model("Issues", schema.issues);
+
+const members = mongoose.model("Members", schema.memberschema);
+
+const contact = mongoose.model("Contacts", schema.contacts);
+
+const editorial_board = mongoose.model("Editorial_board", schema.eboard);
+const Reviewer = mongoose.model("REVIEWER", schema.receiver);
+
+const multer = require("multer");
+const upload = multer({ dest: "uploads/" });
+
+app.post("/reviewer", upload.single("document"), async (req, res) => {
+  let info = req.body;
+  try {
+    const document = new Reviewer({
+      Email: info.Email,
+      Full_Name: info.Full_Name,
+      Designation: info.Designation,
+      Contact: info.contact,
+      Area_of_Interest_Discipline: info.Area_of_Interest_Discipline,
+      Institute_Name_Address: info.Institute_Name_Address,
+      Institute_Website: info.Institute_Website,
+      CV: info.CV,
+    });
+    await document.save();
+    res.send("Form Submitted Successfully");
+  } catch (error) {
+    res.status(500).send("Error uploading document");
+  }
 });
 
-app.get("/contacts", (req, res) => {
-  contact.find().then(function (foundItems) {
-    res.send(foundItems);
+app.get("/reviewer", async (req, res) => {
+  Reviewer.find().then(async (items) => {
+    let data = await items;
+    res.send(data);
   });
 });
 
-app.get("/board/advisoryboard", (req, res) => {
-  res.send(data.advisory_board);
+app.get("/reviewer/:id", async (req, res) => {
+  const response = await Reviewer.findById(req.params.id);
+  res.send(response);
 });
+
+app.post("/contacts", (req, res) => {
+  let info = req.body;
+  const obj = {
+    Name: `${info.Name}`,
+    Title: `${info.Title}`,
+    Bodh: `${info.Bodh}`,
+    Designation: `${info.Designation}`,
+    Email: `${info.Email}`,
+    Phone: `${info.Phone}`,
+  };
+
+  let con = new contact(obj);
+  con.save();
+
+  res.send("Succesfully Added Your Data");
+});
+
+app.get("/board/advisoryboard", (req, res) => {
+  adv_board.find().then((items) => {
+    res.send(items);
+  });
+});
+
+app.post("/board/advisoryboard", (req, res) => {
+  let info = req.body;
+  const obj = {
+    Name: `${info.Name}`,
+
+    Designation: `${info.Designation}`,
+    position: `${info.position}`,
+    Institute: `${info.Institute}`,
+  };
+
+  let con = new adv_board(obj);
+  con.save();
+
+  res.send("Succesfully Added Your Data");
+});
+
 app.get("/issues", (req, res) => {
   issue.find().then(function (foundItems) {
     res.send(foundItems);
   });
+});
+
+app.post("/issues", (req, res) => {
+  let d = req.body;
+  let obj = {
+    Title: `${d.Title}`,
+    Author: `${d.Author}`,
+    Year: `${d.Year}`,
+  };
+
+  let i = new issues(obj);
+  i.save();
+  res.send("Succesfully Added Your Data");
 });
 
 app.get("/issues/:year", (req, res) => {
@@ -138,10 +179,38 @@ app.get("/board/members", (req, res) => {
   });
 });
 
+app.post("/board/members", (req, res) => {
+  let info = req.body;
+  let m = {
+    Name: `${info.Name}`,
+    Designation: `${info.Designation}`,
+    Institute: `${info.Institute}`,
+  };
+
+  let i = new members(m);
+  i.save();
+  res.send("Succesfully Added Your Data");
+});
+
 app.get("/board/editorialboard", (req, res) => {
   editorial_board.find().then(function (foundItems) {
     res.send(foundItems);
   });
+});
+
+app.post("/board/editorialboard", (req, res) => {
+  let info = req.body;
+  let m = {
+    Name: `${info.Name}`,
+    Designation: `${info.Designation}`,
+    Institute: `${info.Institute}`,
+    Title: `${info.Title}`,
+    Email: `${info.Email}`,
+  };
+
+  let i = new members(m);
+  i.save();
+  res.send("Succesfully Added Your Data");
 });
 
 setInterval(async () => {
