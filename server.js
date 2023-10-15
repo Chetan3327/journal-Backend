@@ -14,6 +14,7 @@ app.use(
 );
 
 const mongoose = require("mongoose");
+const { warn } = require("console");
 mongoose.connect(`${process.env.mongourl}`, {
   useNewUrlParser: true,
 });
@@ -25,9 +26,56 @@ const schema = {
 
 const faqs = mongoose.model("BPITJOURNAL", schema);
 
-// data.FAQ.forEach((element) => {
-//   let faq = new faqs(element);
-//   faq.save();
+const advisory_board = {
+  Name: String,
+  Designation: String,
+  Institute: String,
+  position: String,
+};
+
+const adv_board = mongoose.model("advisory_board", advisory_board);
+
+const issues = {
+  Title: String,
+  Author: String,
+  Year: Number,
+};
+
+const issue = mongoose.model("Issues", issues);
+
+const memberschema = {
+  Name: String,
+  Designation: String,
+  Institute: String,
+};
+
+const members = mongoose.model("Members", memberschema);
+
+const contacts = {
+  Name: String,
+  Title: String,
+  Bodh: String,
+  Designation: String,
+  Email: String,
+  Phone: String,
+};
+
+const contact = mongoose.model("Contacts", contacts);
+
+const eboard = {
+  Name: String,
+  Title: String,
+  Area_of_Specialization: String,
+  Designation: String,
+  Institute: String,
+  Email: String,
+};
+
+const editorial_board = mongoose.model("Editorial_board", eboard);
+
+// data.editorial_board.forEach((element) => {
+//   let a = new editorial_board(element);
+//   a.save();
 // });
 
 app.get("/", (req, res) => {
@@ -39,15 +87,27 @@ app.get("/", (req, res) => {
 });
 
 app.get("/contacts", (req, res) => {
-  res.send(data.contacts);
+  contact.find().then(function (foundItems) {
+    res.send(foundItems);
+  });
 });
 
 app.get("/board/advisoryboard", (req, res) => {
   res.send(data.advisory_board);
 });
 app.get("/issues", (req, res) => {
-  res.send(data.issues);
+  issue.find().then(function (foundItems) {
+    res.send(foundItems);
+  });
 });
+
+app.get("/issues/:year", (req, res) => {
+  issue.find({ Year: req.params.year }).then(function (foundItems) {
+    console.log(foundItems);
+    res.send(foundItems);
+  });
+});
+
 app.get("/faq", (req, res) => {
   faqs.find().then(function (foundItems) {
     res.send(foundItems);
@@ -73,11 +133,15 @@ app.post("/faq", (req, res) => {
 });
 
 app.get("/board/members", (req, res) => {
-  res.send(data.members);
+  members.find().then(function (foundItems) {
+    res.send(foundItems);
+  });
 });
 
 app.get("/board/editorialboard", (req, res) => {
-  res.send(data.editorial_board);
+  editorial_board.find().then(function (foundItems) {
+    res.send(foundItems);
+  });
 });
 
 setInterval(async () => {
