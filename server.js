@@ -101,6 +101,12 @@ app.post("/contacts", (req, res) => {
   res.send("Succesfully Added Your Data");
 });
 
+app.get("/contacts", (req, res) => {
+  contact.find().then((items) => {
+    res.send(items);
+  });
+});
+
 app.get("/board/advisoryboard", (req, res) => {
   adv_board.find().then((items) => {
     res.send(items);
