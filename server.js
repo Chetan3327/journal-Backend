@@ -57,6 +57,10 @@ app.get("/board/editorialboard", (req, res) => {
   res.send(data.editorial_board);
 });
 
+setInterval(async () => {
+  const res = await fetch(`https://bpit-journal-backend.onrender.com/`);
+}, 899990);
+
 let port = process.env.PORT || 3000;
 
 app.listen(port, () => {
