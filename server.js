@@ -54,6 +54,10 @@ app.get("/faq", (req, res) => {
   });
 });
 
+app.delete("/faq/:id", async (req, res) => {
+  await faqs.findByIdandDelete(req.params.id);
+});
+
 app.post("/faq", (req, res) => {
   let info = req.body;
   let obj = {
