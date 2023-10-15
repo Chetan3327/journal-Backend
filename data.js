@@ -559,10 +559,50 @@ let issues = {
   ],
 };
 
+let FAQ = [
+  {
+    Que: "Can I publish a review or survey paper in BODH?",
+    Ans: "There are no restrictions on the type of paper that may be published within BODH. Any article submitted that falls within the aims and scope of a journal will be eligible to be published in BODH.",
+  },
+  {
+    Que: "How much will it cost to publish in BODH?",
+    Ans: "Bodh does not charge any amount from the authors for publishing their research papers. Publication is completely free of cost, but the papers should be original",
+  },
+  {
+    Que: "How long does the review process take?",
+    Ans: "The papers will be reviewed by two or more independent referees. They may also be read and considered by members of the journal’s editorial board and ultimately by the editor(s) before a decision is rendered. The review result will be sent to you within one month after submission. Do not hesitate to contact us if you would like to know the status of your manuscript. Line spacing: All lines should be double spaced. Double-spacing your lines makes the manuscript easier to read and mark up. Do not add an extra space between paragraphs.",
+  },
+  {
+    Que: "How do I know whether my manuscript submission to BODH worked OK?",
+    Ans: "You will receive an automatic confirmation e-mail as soon as you have uploaded the manuscript. Your manuscript will then be checked and forwarded to the editors who will start the preliminary review. If there are any problems with your uploaded manuscript you will be contacted by the editors.",
+  },
+  {
+    Que: "Whom do I contact if I have questions about the status of my manuscript?",
+    Ans: "Please contact us via the email: bodhbpitijtm@gmail.com or bodhbpitijtm@bpitindia.com.",
+  },
+  {
+    Que: "What type of file format do you accept?",
+    Ans: "At present, Microsoft Word 2010 or higher is the only format for submitting your manuscript.",
+  },
+  {
+    Que: "How many pages is allowed in any submitted paper?",
+    Ans: "Submissions should be no less than five pages and should not exceed thirty pages in length.",
+  },
+  {
+    Que: "Why do I need to sign a copyright form?",
+    Ans: " It is a legal requirement that we cannot publish any article without receiving a signed copyright form from the author. If we do not receive your signed copyright form, we cannot publish your article.",
+  },
+  {
+    Que: "How many papers can an author submit and what are the restrictions? ",
+    Ans: "An author can submit any number of different papers for publication consideration. However, you can only submit one paper to one journal at one time. You cannot submit the same paper to more than one journal at the same time for consideration.",
+  },
+];
+
 module.exports = {
   advisory_board,
   members,
   contacts,
   editorial_board,
   issues,
+  FAQ,
 };

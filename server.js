@@ -36,6 +36,18 @@ app.get("/board/advisoryboard", (req, res) => {
 app.get("/issues", (req, res) => {
   res.send(data.issues);
 });
+app.get("/faq", (req, res) => {
+  res.send(data.FAQ);
+});
+
+app.post("/faq", (req, res) => {
+  let info = req.body;
+  let obj = {
+    Que: `${info.Que}`,
+    Ans: `${info.Ans}`,
+  };
+  data.FAQ.push(obj);
+});
 
 app.get("/board/members", (req, res) => {
   res.send(data.members);
