@@ -55,7 +55,8 @@ app.get("/faq", (req, res) => {
 });
 
 app.delete("/faq/:id", async (req, res) => {
-  await faqs.findByIdandDelete(req.params.id);
+  await faqs.findByIdAndDelete(req.params.id);
+  res.send("Item deleted Succesfully");
 });
 
 app.post("/faq", (req, res) => {
