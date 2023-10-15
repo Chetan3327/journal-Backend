@@ -18,6 +18,18 @@ mongoose.connect(`${process.env.mongourl}`, {
   useNewUrlParser: true,
 });
 
+const schema = {
+  Que: String,
+  Ans: String,
+};
+
+const faqs = mongoose.model("BPITJOURNAL", schema);
+
+// data.FAQ.forEach((element) => {
+//   let faq = new faqs(element);
+//   faq.save();
+// });
+
 app.get("/", (req, res) => {
   const status = {
     Status: "Running",
@@ -37,7 +49,9 @@ app.get("/issues", (req, res) => {
   res.send(data.issues);
 });
 app.get("/faq", (req, res) => {
-  res.send(data.FAQ);
+  faqs.find().then(function (foundItems) {
+    res.send(foundItems);
+  });
 });
 
 app.post("/faq", (req, res) => {
@@ -46,7 +60,11 @@ app.post("/faq", (req, res) => {
     Que: `${info.Que}`,
     Ans: `${info.Ans}`,
   };
-  data.FAQ.push(obj);
+
+  let faq = new faqs(obj);
+  faq.save();
+
+  res.send("Succesfully Added Your Data");
 });
 
 app.get("/board/members", (req, res) => {
