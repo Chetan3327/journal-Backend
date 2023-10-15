@@ -79,6 +79,11 @@ app.get("/reviewer", async (req, res) => {
   });
 });
 
+app.delete("/reviewer/:id", async (req, res) => {
+  await Reviewer.findByIdAndDelete(req.params.id);
+  res.send("reviewer deleted Succesfully");
+});
+
 app.get("/reviewer/:id", async (req, res) => {
   const response = await Reviewer.findById(req.params.id);
   res.send(response);
@@ -107,10 +112,20 @@ app.get("/contacts", (req, res) => {
   });
 });
 
+app.delete("/contacts/:id", async (req, res) => {
+  await contact.findByIdAndDelete(req.params.id);
+  res.send("Contact Deleted Succesfully");
+});
+
 app.get("/board/advisoryboard", (req, res) => {
   adv_board.find().then((items) => {
     res.send(items);
   });
+});
+
+app.delete("/board/advisoryboard/:id", async (req, res) => {
+  await adv_board.findByIdAndDelete(req.params.id);
+  res.send("Item Deleted Succesfully");
 });
 
 app.post("/board/advisoryboard", (req, res) => {
@@ -142,6 +157,11 @@ app.post("/issues", (req, res) => {
     Author: `${d.Author}`,
     Year: `${d.Year}`,
   };
+
+  app.delete("/issues/:id", async (req, res) => {
+    await issue.findByIdAndDelete(req.params.id);
+    res.send("Item Deleted Succesfully");
+  });
 
   let i = new issues(obj);
   i.save();
@@ -183,6 +203,11 @@ app.get("/board/members", (req, res) => {
   members.find().then(function (foundItems) {
     res.send(foundItems);
   });
+});
+
+app.delete("/board/members/:id", async (req, res) => {
+  await members.findByIdAndDelete(req.params.id);
+  res.send("Item Deleted Succesfully");
 });
 
 app.post("/board/members", (req, res) => {
