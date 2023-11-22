@@ -12,12 +12,12 @@ app.use(
     origin: "*",
   })
 );
+const schema = require("./schema");
 
 const routes = require("./routes"); // Assuming your route file is in the same directory
 
 // Use the external routes
 app.use("/", routes);
-const schema = require("./schema");
 
 const mongoose = require("mongoose");
 
@@ -86,9 +86,9 @@ app.post("/reviewer", async (req, res) => {
       CV: info.CV,
     });
     await document.save();
-    res.statusCode(200).send("Form Submitted Successfully");
+    res.status(200).send("Form Submitted Successfully");
   } catch (error) {
-    res.statusCode(500).send("Error uploading Form");
+    res.status(500).send("Error uploading Form");
   }
 });
 
@@ -96,28 +96,28 @@ app.get("/reviewer", (req, res) => {
   try {
     Reviewer.find().then(async (items) => {
       let data = await items;
-      res.statusCode(200).send(data);
+      res.status(200).send(data);
     });
   } catch (error) {
-    res.statusCode(500).send("Data Saved");
+    res.status(500).send("Data Saved");
   }
 });
 
 app.delete("/reviewer/:id", async (req, res) => {
   try {
     await Reviewer.findByIdAndDelete(req.params.id);
-    res.statusCode(200).send("reviewer deleted Succesfully");
+    res.status(200).send("reviewer deleted Succesfully");
   } catch (error) {
-    res.statusCode(500).send("Failed to get reviewers");
+    res.status(500).send("Failed to get reviewers");
   }
 });
 
 app.get("/reviewer/:id", async (req, res) => {
   try {
     const response = await Reviewer.findById(req.params.id);
-    res.statusCode(200).send(response);
+    res.status(200).send(response);
   } catch (error) {
-    res.statusCode(500).send("Failed to get reviewers");
+    res.status(500).send("Failed to get reviewers");
   }
 });
 
@@ -136,47 +136,47 @@ app.post("/contacts", (req, res) => {
     let con = new contact(obj);
     con.save();
 
-    res.statusCode(200).send("Succesfully Added Your Data");
+    res.status(200).send("Succesfully Added Your Data");
   } catch (error) {
-    res.statusCode(500).send("Failed to Add Your Data");
+    res.status(500).send("Failed to Add Your Data");
   }
 });
 
 app.get("/contacts", (req, res) => {
   try {
     contact.find().then((items) => {
-      res.statusCode(200).send(items);
+      res.status(200).send(items);
     });
   } catch (error) {
-    res.statusCode(500).send("Failed to get contacts");
+    res.status(500).send("Failed to get contacts");
   }
 });
 
 app.delete("/contacts/:id", async (req, res) => {
   try {
     await contact.findByIdAndDelete(req.params.id);
-    res.statusCode(200).send("Contact Deleted Succesfully");
+    res.status(200).send("Contact Deleted Succesfully");
   } catch (error) {
-    res.statusCode(500).send("Failed to delete contacts");
+    res.status(500).send("Failed to delete contacts");
   }
 });
 
 app.get("/advisoryboard", (req, res) => {
   try {
     adv_board.find().then((items) => {
-      res.statusCode(200).send(items);
+      res.status(200).send(items);
     });
   } catch (error) {
-    res.statusCode(500).send("Failed to Get item");
+    res.status(500).send("Failed to Get item");
   }
 });
 
 app.delete("/advisoryboard/:id", async (req, res) => {
   try {
     await adv_board.findByIdAndDelete(req.params.id);
-    res.statusCode(200).send("Item Deleted Succesfully");
+    res.status(200).send("Item Deleted Succesfully");
   } catch {
-    res.statusCode(500).send("Item Deletion Failed");
+    res.status(500).send("Item Deletion Failed");
   }
 });
 
@@ -194,19 +194,19 @@ app.post("/advisoryboard", (req, res) => {
     let con = new adv_board(obj);
     con.save();
 
-    res.statusCode(200).send("Succesfully Added Your Data");
+    res.status(200).send("Succesfully Added Your Data");
   } catch (error) {
-    res.statusCode(500).send("Failed to save data");
+    res.status(500).send("Failed to save data");
   }
 });
 
 app.get("/issues", (req, res) => {
   try {
     issue.find().then(function (foundItems) {
-      res.statusCode(200).send(foundItems);
+      res.status(200).send(foundItems);
     });
   } catch (error) {
-    res.statusCode(500).send("Failed to get issues");
+    res.status(500).send("Failed to get issues");
   }
 });
 
@@ -222,18 +222,18 @@ app.post("/issues", (req, res) => {
 
     let i = new issues(obj);
     i.save();
-    res.statusCode(200).send("Succesfully Added Your Data");
+    res.status(200).send("Succesfully Added Your Data");
   } catch (error) {
-    res.statusCode(500).send("Failed to add your data");
+    res.status(500).send("Failed to add your data");
   }
 });
 
 app.delete("/issues/:id", async (req, res) => {
   try {
     await issue.findByIdAndDelete(req.params.id);
-    res.statusCode(200).send("Item Deleted Succesfully");
+    res.status(200).send("Item Deleted Succesfully");
   } catch (error) {
-    res.statusCode(500).send("Failed to delete item");
+    res.status(500).send("Failed to delete item");
   }
 });
 
@@ -241,10 +241,10 @@ app.get("/issues/:year", (req, res) => {
   try {
     issue.find({ Year: req.params.year }).then(function (foundItems) {
       console.log(foundItems);
-      res.statusCode(200).send(foundItems);
+      res.status(200).send(foundItems);
     });
   } catch (error) {
-    res.statusCode(500).send("Failed to get issues");
+    res.status(500).send("Failed to get issues");
   }
 });
 
@@ -252,7 +252,7 @@ app.get("/issues/:id", async (req, res) => {
   try {
     issue.findOne({ _id: req.params.id }).then(async function (foundItems) {
       if (!foundItems) {
-        res.statusCode(404).send({
+        res.status(404).send({
           Message: "Not Found",
         });
       }
@@ -261,31 +261,31 @@ app.get("/issues/:id", async (req, res) => {
       doc.pdfUrl = url;
       await doc.save();
 
-      res.statusCode(200).json({
+      res.status(200).json({
         message: "Updated Successfully",
       });
     });
   } catch (error) {
-    res.statusCode(500).send("Failed to get issues");
+    res.status(500).send("Failed to get issues");
   }
 });
 
 app.get("/faq", (req, res) => {
   try {
     faqs.find().then(function (foundItems) {
-      res.statusCode(200).send(foundItems);
+      res.status(200).send(foundItems);
     });
   } catch (error) {
-    res.statusCode(500).send("Failed to get FAQs");
+    res.status(500).send("Failed to get FAQs");
   }
 });
 
 app.delete("/faq/:id", async (req, res) => {
   try {
     await faqs.findByIdAndDelete(req.params.id);
-    res.statusCode(200).send("Item deleted Succesfully");
+    res.status(200).send("Item deleted Succesfully");
   } catch (error) {
-    res.statusCode(500).send("Failed to delete FAQs");
+    res.status(500).send("Failed to delete FAQs");
   }
 });
 
@@ -300,28 +300,28 @@ app.post("/faq", (req, res) => {
     let faq = new faqs(obj);
     faq.save();
 
-    res.statusCode(200).send("Succesfully Added Your Data");
+    res.status(200).send("Succesfully Added Your Data");
   } catch (error) {
-    res.statusCode(500).send("Failed to Save FAQs");
+    res.status(500).send("Failed to Save FAQs");
   }
 });
 
 app.get("/members", (req, res) => {
   try {
     members.find().then(function (foundItems) {
-      res.statusCode(200).send(foundItems);
+      res.status(200).send(foundItems);
     });
   } catch (error) {
-    res.statusCode(500).send("Failed to get Members");
+    res.status(500).send("Failed to get Members");
   }
 });
 
 app.delete("/members/:id", async (req, res) => {
   try {
     await members.findByIdAndDelete(req.params.id);
-    res.statusCode(200).send("Item Deleted Succesfully");
+    res.status(200).send("Item Deleted Succesfully");
   } catch (error) {
-    res.statusCode(500).send("Failed to delete members");
+    res.status(500).send("Failed to delete members");
   }
 });
 
@@ -336,19 +336,19 @@ app.post("/members", (req, res) => {
 
     let i = new members(m);
     i.save();
-    res.statusCode(200).send("Succesfully Added Your Data");
+    res.status(200).send("Succesfully Added Your Data");
   } catch (error) {
-    res.statusCode(500).send("Failed Add Your Data");
+    res.status(500).send("Failed Add Your Data");
   }
 });
 
 app.get("/editorialboard", (req, res) => {
   try {
     editorial_board.find().then(function (foundItems) {
-      res.statusCode(200).send(foundItems);
+      res.status(200).send(foundItems);
     });
   } catch (error) {
-    res.statusCode(500).send("Failed to get Editorial Boards");
+    res.status(500).send("Failed to get Editorial Boards");
   }
 });
 
@@ -365,9 +365,9 @@ app.post("/editorialboard", (req, res) => {
 
     let i = new members(m);
     i.save();
-    res.statusCode(200).send("Succesfully Added Your Data");
+    res.status(200).send("Succesfully Added Your Data");
   } catch (error) {
-    res.statusCode(500).send("Failed to save data");
+    res.status(500).send("Failed to save data");
   }
 });
 
