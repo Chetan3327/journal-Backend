@@ -25,6 +25,22 @@ mongoose.connect(`${process.env.mongourl}`, {
   useNewUrlParser: true,
 });
 
+app.get("/admin", async (req, res) => {
+  const userId = req.userId;
+  const pass = req.password;
+
+  try {
+    if (userId != "Admin") {
+      return res.status(404).json({ error: "User not found" });
+    }
+    if (userId == "Admin" && pass == "Admin") {
+      return res.status(200).send({ message: "User Found" });
+    }
+  } catch (error) {
+    res.status(400).json({ error: "Internal server error" });
+  }
+});
+
 // data.editorial_board.forEach((element) => {
 //   let a = new editorial_board(element);
 //   a.save();
@@ -66,182 +82,266 @@ app.post("/reviewer", upload.single("document"), async (req, res) => {
       CV: info.CV,
     });
     await document.save();
-    res.send("Form Submitted Successfully");
+    res.statusCode(200).send("Form Submitted Successfully");
   } catch (error) {
-    res.status(500).send("Error uploading document");
+    res.statusCode(500).send("Error uploading Form");
   }
 });
 
-app.get("/reviewer", async (req, res) => {
-  Reviewer.find().then(async (items) => {
-    let data = await items;
-    res.send(data);
-  });
+app.get("/reviewer", (req, res) => {
+  try {
+    Reviewer.find().then(async (items) => {
+      let data = await items;
+      res.statusCode(200).send(data);
+    });
+  } catch (error) {
+    res.statusCode(500).send("Data Saved");
+  }
 });
 
 app.delete("/reviewer/:id", async (req, res) => {
-  await Reviewer.findByIdAndDelete(req.params.id);
-  res.send("reviewer deleted Succesfully");
+  try {
+    await Reviewer.findByIdAndDelete(req.params.id);
+    res.statusCode(200).send("reviewer deleted Succesfully");
+  } catch (error) {
+    res.statusCode(500).send("Failed to get reviewers");
+  }
 });
 
 app.get("/reviewer/:id", async (req, res) => {
-  const response = await Reviewer.findById(req.params.id);
-  res.send(response);
+  try {
+    const response = await Reviewer.findById(req.params.id);
+    res.statusCode(200).send(response);
+  } catch (error) {
+    res.statusCode(500).send("Failed to get reviewers");
+  }
 });
 
 app.post("/contacts", (req, res) => {
-  let info = req.body;
-  const obj = {
-    Name: `${info.Name}`,
-    Title: `${info.Title}`,
-    Bodh: `${info.Bodh}`,
-    Designation: `${info.Designation}`,
-    Email: `${info.Email}`,
-    Phone: `${info.Phone}`,
-  };
+  try {
+    let info = req.body;
+    const obj = {
+      Name: `${info.Name}`,
+      Title: `${info.Title}`,
+      Bodh: `${info.Bodh}`,
+      Designation: `${info.Designation}`,
+      Email: `${info.Email}`,
+      Phone: `${info.Phone}`,
+    };
 
-  let con = new contact(obj);
-  con.save();
+    let con = new contact(obj);
+    con.save();
 
-  res.send("Succesfully Added Your Data");
+    res.statusCode(200).send("Succesfully Added Your Data");
+  } catch (error) {
+    res.statusCode(500).send("Failed to Add Your Data");
+  }
 });
 
 app.get("/contacts", (req, res) => {
-  contact.find().then((items) => {
-    res.send(items);
-  });
+  try {
+    contact.find().then((items) => {
+      res.statusCode(200).send(items);
+    });
+  } catch (error) {
+    res.statusCode(500).send("Failed to get contacts");
+  }
 });
 
 app.delete("/contacts/:id", async (req, res) => {
-  await contact.findByIdAndDelete(req.params.id);
-  res.send("Contact Deleted Succesfully");
+  try {
+    await contact.findByIdAndDelete(req.params.id);
+    res.statusCode(200).send("Contact Deleted Succesfully");
+  } catch (error) {
+    res.statusCode(500).send("Failed to delete contacts");
+  }
 });
 
-app.get("/board/advisoryboard", (req, res) => {
-  adv_board.find().then((items) => {
-    res.send(items);
-  });
+app.get("/advisoryboard", (req, res) => {
+  try {
+    adv_board.find().then((items) => {
+      res.statusCode(200).send(items);
+    });
+  } catch (error) {
+    res.statusCode(500).send("Failed to Get item");
+  }
 });
 
-app.delete("/board/advisoryboard/:id", async (req, res) => {
-  await adv_board.findByIdAndDelete(req.params.id);
-  res.send("Item Deleted Succesfully");
+app.delete("/advisoryboard/:id", async (req, res) => {
+  try {
+    await adv_board.findByIdAndDelete(req.params.id);
+    res.statusCode(200).send("Item Deleted Succesfully");
+  } catch {
+    res.statusCode(500).send("Item Deletion Failed");
+  }
 });
 
-app.post("/board/advisoryboard", (req, res) => {
-  let info = req.body;
-  const obj = {
-    Name: `${info.Name}`,
+app.post("/advisoryboard", (req, res) => {
+  try {
+    let info = req.body;
+    const obj = {
+      Name: `${info.Name}`,
 
-    Designation: `${info.Designation}`,
-    position: `${info.position}`,
-    Institute: `${info.Institute}`,
-  };
+      Designation: `${info.Designation}`,
+      position: `${info.position}`,
+      Institute: `${info.Institute}`,
+    };
 
-  let con = new adv_board(obj);
-  con.save();
+    let con = new adv_board(obj);
+    con.save();
 
-  res.send("Succesfully Added Your Data");
+    res.statusCode(200).send("Succesfully Added Your Data");
+  } catch (error) {
+    res.statusCode(500).send("Failed to save data");
+  }
 });
 
 app.get("/issues", (req, res) => {
-  issue.find().then(function (foundItems) {
-    res.send(foundItems);
-  });
+  try {
+    issue.find().then(function (foundItems) {
+      res.statusCode(200).send(foundItems);
+    });
+  } catch (error) {
+    res.statusCode(500).send("Failed to get issues");
+  }
 });
 
 app.post("/issues", (req, res) => {
-  let d = req.body;
-  let obj = {
-    Title: `${d.Title}`,
-    Author: `${d.Author}`,
-    Year: `${d.Year}`,
-  };
+  try {
+    let d = req.body;
+    let obj = {
+      Title: `${d.Title}`,
+      Author: `${d.Author}`,
+      Year: `${d.Year}`,
+    };
 
-  app.delete("/issues/:id", async (req, res) => {
+    let i = new issues(obj);
+    i.save();
+    res.statusCode(200).send("Succesfully Added Your Data");
+  } catch (error) {
+    res.statusCode(500).send("Failed to add your data");
+  }
+});
+
+app.delete("/issues/:id", async (req, res) => {
+  try {
     await issue.findByIdAndDelete(req.params.id);
-    res.send("Item Deleted Succesfully");
-  });
-
-  let i = new issues(obj);
-  i.save();
-  res.send("Succesfully Added Your Data");
+    res.statusCode(200).send("Item Deleted Succesfully");
+  } catch (error) {
+    res.statusCode(500).send("Failed to delete item");
+  }
 });
 
 app.get("/issues/:year", (req, res) => {
-  issue.find({ Year: req.params.year }).then(function (foundItems) {
-    console.log(foundItems);
-    res.send(foundItems);
-  });
+  try {
+    issue.find({ Year: req.params.year }).then(function (foundItems) {
+      console.log(foundItems);
+      res.statusCode(200).send(foundItems);
+    });
+  } catch (error) {
+    res.statusCode(500).send("Failed to get issues");
+  }
 });
 
 app.get("/faq", (req, res) => {
-  faqs.find().then(function (foundItems) {
-    res.send(foundItems);
-  });
+  try {
+    faqs.find().then(function (foundItems) {
+      res.statusCode(200).send(foundItems);
+    });
+  } catch (error) {
+    res.statusCode(500).send("Failed to get FAQs");
+  }
 });
 
 app.delete("/faq/:id", async (req, res) => {
-  await faqs.findByIdAndDelete(req.params.id);
-  res.send("Item deleted Succesfully");
+  try {
+    await faqs.findByIdAndDelete(req.params.id);
+    res.statusCode(200).send("Item deleted Succesfully");
+  } catch (error) {
+    res.statusCode(500).send("Failed to delete FAQs");
+  }
 });
 
 app.post("/faq", (req, res) => {
+  try {
+    let info = req.body;
+    let obj = {
+      Que: `${info.Que}`,
+      Ans: `${info.Ans}`,
+    };
+
+    let faq = new faqs(obj);
+    faq.save();
+
+    res.statusCode(200).send("Succesfully Added Your Data");
+  } catch (error) {
+    res.statusCode(500).send("Failed to Save FAQs");
+  }
+});
+
+app.get("/members", (req, res) => {
+  try {
+    members.find().then(function (foundItems) {
+      res.statusCode(200).send(foundItems);
+    });
+  } catch (error) {
+    res.statusCode(500).send("Failed to get Members");
+  }
+});
+
+app.delete("/members/:id", async (req, res) => {
+  try {
+    await members.findByIdAndDelete(req.params.id);
+    res.statusCode(200).send("Item Deleted Succesfully");
+  } catch (error) {
+    res.statusCode(500).send("Failed to delete members");
+  }
+});
+
+app.post("/members", (req, res) => {
+  try {
+    let info = req.body;
+    let m = {
+      Name: `${info.Name}`,
+      Designation: `${info.Designation}`,
+      Institute: `${info.Institute}`,
+    };
+
+    let i = new members(m);
+    i.save();
+    res.statusCode(200).send("Succesfully Added Your Data");
+  } catch (error) {
+    res.statusCode(500).send("Failed Add Your Data");
+  }
+});
+
+app.get("/editorialboard", (req, res) => {
+  try {
+    editorial_board.find().then(function (foundItems) {
+      res.statusCode(200).send(foundItems);
+    });
+  } catch (error) {
+    res.statusCode(500).send("Failed to get Editorial Boards");
+  }
+});
+
+app.post("/editorialboard", (req, res) => {
   let info = req.body;
-  let obj = {
-    Que: `${info.Que}`,
-    Ans: `${info.Ans}`,
-  };
+  try {
+    let m = {
+      Name: `${info.Name}`,
+      Designation: `${info.Designation}`,
+      Institute: `${info.Institute}`,
+      Title: `${info.Title}`,
+      Email: `${info.Email}`,
+    };
 
-  let faq = new faqs(obj);
-  faq.save();
-
-  res.send("Succesfully Added Your Data");
-});
-
-app.get("/board/members", (req, res) => {
-  members.find().then(function (foundItems) {
-    res.send(foundItems);
-  });
-});
-
-app.delete("/board/members/:id", async (req, res) => {
-  await members.findByIdAndDelete(req.params.id);
-  res.send("Item Deleted Succesfully");
-});
-
-app.post("/board/members", (req, res) => {
-  let info = req.body;
-  let m = {
-    Name: `${info.Name}`,
-    Designation: `${info.Designation}`,
-    Institute: `${info.Institute}`,
-  };
-
-  let i = new members(m);
-  i.save();
-  res.send("Succesfully Added Your Data");
-});
-
-app.get("/board/editorialboard", (req, res) => {
-  editorial_board.find().then(function (foundItems) {
-    res.send(foundItems);
-  });
-});
-
-app.post("/board/editorialboard", (req, res) => {
-  let info = req.body;
-  let m = {
-    Name: `${info.Name}`,
-    Designation: `${info.Designation}`,
-    Institute: `${info.Institute}`,
-    Title: `${info.Title}`,
-    Email: `${info.Email}`,
-  };
-
-  let i = new members(m);
-  i.save();
-  res.send("Succesfully Added Your Data");
+    let i = new members(m);
+    i.save();
+    res.statusCode(200).send("Succesfully Added Your Data");
+  } catch (error) {
+    res.statusCode(500).send("Failed to save data");
+  }
 });
 
 setInterval(async () => {
