@@ -26,6 +26,7 @@ const issues = {
   Title: String,
   Author: String,
   Year: Number,
+  pdfUrl: String,
 };
 
 const advisory_board = {
@@ -48,7 +49,7 @@ const receiver = {
   Area_of_Interest_Discipline: String,
   Institute_Name_Address: String,
   Institute_Website: String,
-  CV: Buffer,
+  CV: String,
 };
 
 module.exports = {

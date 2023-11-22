@@ -26,18 +26,22 @@ mongoose.connect(`${process.env.mongourl}`, {
 });
 
 app.get("/admin", async (req, res) => {
-  const userId = req.userId;
-  const pass = req.password;
+  const userId = req.body.userId;
+  const pass = req.body.password;
 
   try {
-    if (userId != "Admin") {
-      return res.status(404).json({ error: "User not found" });
+    if (userId != process.env.key) {
+      return res.status(404).json({ error: "Username incorrect" });
     }
-    if (userId == "Admin" && pass == "Admin") {
+
+    if (userId == process.env.key && pass == process.env.value) {
+      return res.status(400).json({ error: "Password incorrect" });
+    }
+    if (userId == process.env.key && pass == process.env.value) {
       return res.status(200).send({ message: "User Found" });
     }
   } catch (error) {
-    res.status(400).json({ error: "Internal server error" });
+    res.status(500).json({ error: "Internal server error" });
   }
 });
 
@@ -68,7 +72,7 @@ const Reviewer = mongoose.model("REVIEWER", schema.receiver);
 const multer = require("multer");
 const upload = multer({ dest: "uploads/" });
 
-app.post("/reviewer", upload.single("document"), async (req, res) => {
+app.post("/reviewer", async (req, res) => {
   let info = req.body;
   try {
     const document = new Reviewer({
@@ -213,6 +217,7 @@ app.post("/issues", (req, res) => {
       Title: `${d.Title}`,
       Author: `${d.Author}`,
       Year: `${d.Year}`,
+      pdfUrl: `${d.url}`,
     };
 
     let i = new issues(obj);
@@ -237,6 +242,28 @@ app.get("/issues/:year", (req, res) => {
     issue.find({ Year: req.params.year }).then(function (foundItems) {
       console.log(foundItems);
       res.statusCode(200).send(foundItems);
+    });
+  } catch (error) {
+    res.statusCode(500).send("Failed to get issues");
+  }
+});
+
+app.get("/issues/:id", async (req, res) => {
+  try {
+    issue.findOne({ _id: req.params.id }).then(async function (foundItems) {
+      if (!foundItems) {
+        res.statusCode(404).send({
+          Message: "Not Found",
+        });
+      }
+      const url = req.body.url;
+      let doc = await Character.findOne({ _id: req.params.id });
+      doc.pdfUrl = url;
+      await doc.save();
+
+      res.statusCode(200).json({
+        message: "Updated Successfully",
+      });
     });
   } catch (error) {
     res.statusCode(500).send("Failed to get issues");
