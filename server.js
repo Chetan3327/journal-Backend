@@ -71,6 +71,15 @@ const Reviewer = mongoose.model("REVIEWER", schema.receiver);
 
 const manuscript = mongoose.model("ManuscriptForm", schema.manuscript);
 
+app.get("/manuscript", async (req, res) => {
+  try {
+    const response = await manuscript.find();
+    res.status(200).send(response);
+  } catch (error) {
+    res.status(500).send("Failed to get document");
+  }
+});
+
 app.post("/manuscript", async (req, res) => {
   const {
     Author1,
@@ -113,7 +122,7 @@ app.post("/manuscript", async (req, res) => {
 
     res.status(200).send("Document Saved");
   } catch (error) {
-    res.status(500).send("Data Saved");
+    res.status(500).send("Data not Saved");
   }
 });
 
