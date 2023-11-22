@@ -81,24 +81,23 @@ app.get("/manuscript", async (req, res) => {
 });
 
 app.post("/manuscript", async (req, res) => {
-  const {
-    Author1,
-    Author2,
-    Author3,
-    Author4,
-    Corresponding_Author_Email,
-    Address,
-    City_with_State_or_Province,
-    Country,
-    Area_of_Research,
-    Abstract,
-    Keywords,
-    Name_of_First_Reviewer,
-    Name_of_Second_Reviewer,
-    Email_of_First_Reviewer,
-    Email_of_Second,
-    manuscript_url,
-  } = req.body;
+  const Author1 = req.body.Author1;
+  const Author2 = req.body.Author2;
+  const Author3 = req.body.Author3;
+  const Author4 = req.body.Author4;
+  const Corresponding_Author_Email = req.body.Corresponding_Author_Email;
+  const Address = req.body.Address;
+  const City_with_State_or_Province = req.body.City_with_State_or_Province;
+  const Country = req.body.Country;
+  const Area_of_Research = req.body.Area_of_Research;
+  const Abstract = req.body.Abstract;
+  const Keywords = req.body.Keywords;
+  const Name_of_First_Reviewer = req.body.Name_of_First_Reviewer;
+  const Name_of_Second_Reviewer = req.body.Name_of_Second_Reviewer;
+  const Email_of_First_Reviewer = req.body.Email_of_First_Reviewer;
+  const Email_of_Second_Reviewer = req.body.Email_of_Second_Reviewer;
+  const manuscript_url = req.body.manuscript_url;
+
   try {
     const document = new manuscript({
       Author1,
