@@ -257,7 +257,7 @@ app.get("/issues/:id", async (req, res) => {
         });
       }
       const url = req.body.url;
-      let doc = await Character.findOne({ _id: req.params.id });
+      let doc = await issue.findOne({ _id: req.params.id });
       doc.pdfUrl = url;
       await doc.save();
 
