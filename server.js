@@ -309,6 +309,7 @@ app.post("/faq", (req, res) => {
 app.get("/members", (req, res) => {
   try {
     members.find().then(function (foundItems) {
+      console.log(foundItems);
       res.status(200).send(foundItems);
     });
   } catch (error) {
