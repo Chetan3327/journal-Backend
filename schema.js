@@ -16,6 +16,25 @@ const contacts = {
   Phone: String,
 };
 
+const manuscript = {
+  Author1: String,
+  Author2: String,
+  Author3: String,
+  Author4: String,
+  Corresponding_Author_Email: String,
+  Address: String,
+  City_with_State_or_Province: String,
+  Country: String,
+  Area_of_Research: String,
+  Abstract: String,
+  Keywords: String,
+  Name_of_First_Reviewer: String,
+  Name_of_Second_Reviewer: String,
+  Email_of_First_Reviewer: String,
+  Email_of_Second_Reviewer: String,
+  manuscript_url: String,
+};
+
 const memberschema = {
   Name: String,
   Designation: String,
@@ -60,4 +79,5 @@ module.exports = {
   contacts,
   eboard,
   receiver,
+  manuscript,
 };

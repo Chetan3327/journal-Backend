@@ -69,8 +69,53 @@ const contact = mongoose.model("Contacts", schema.contacts);
 const editorial_board = mongoose.model("Editorial_board", schema.eboard);
 const Reviewer = mongoose.model("REVIEWER", schema.receiver);
 
-const multer = require("multer");
-const upload = multer({ dest: "uploads/" });
+const manuscript = mongoose.model("ManuscriptForm", schema.manuscript);
+
+app.post("/manuscript", async (req, res) => {
+  const {
+    Author1,
+    Author2,
+    Author3,
+    Author4,
+    Corresponding_Author_Email,
+    Address,
+    City_with_State_or_Province,
+    Country,
+    Area_of_Research,
+    Abstract,
+    Keywords,
+    Name_of_First_Reviewer,
+    Name_of_Second_Reviewer,
+    Email_of_First_Reviewer,
+    Email_of_Second,
+    manuscript_url,
+  } = req.body;
+  try {
+    const document = new manuscript({
+      Author1,
+      Author2,
+      Author3,
+      Author4,
+      Corresponding_Author_Email,
+      Address,
+      City_with_State_or_Province,
+      Country,
+      Area_of_Research,
+      Abstract,
+      Keywords,
+      Name_of_First_Reviewer,
+      Name_of_Second_Reviewer,
+      Email_of_First_Reviewer,
+      Email_of_Second_Reviewer,
+      manuscript_url,
+    });
+    await document.save();
+
+    res.status(200).send("Document Saved");
+  } catch (error) {
+    res.status(500).send("Data Saved");
+  }
+});
 
 app.post("/reviewer", async (req, res) => {
   let info = req.body;
