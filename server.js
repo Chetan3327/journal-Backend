@@ -25,7 +25,7 @@ mongoose.connect(`${process.env.mongourl}`, {
   useNewUrlParser: true,
 });
 
-app.get("/admin", async (req, res) => {
+app.post("/admin", async (req, res) => {
   const userId = req.body.userId;
   const pass = req.body.password;
 
