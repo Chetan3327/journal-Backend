@@ -136,7 +136,7 @@ app.post("/reviewer", async (req, res) => {
       Area_of_Interest_Discipline: info.Area_of_Interest_Discipline,
       Institute_Name_Address: info.Institute_Name_Address,
       Institute_Website: info.Institute_Website,
-      CV: info.CV,
+      reviwer_url: info.reviwer_url,
     });
     await document.save();
     res.status(200).send("Form Submitted Successfully");

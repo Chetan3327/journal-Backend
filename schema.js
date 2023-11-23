@@ -68,7 +68,7 @@ const receiver = {
   Area_of_Interest_Discipline: String,
   Institute_Name_Address: String,
   Institute_Website: String,
-  CV: String,
+  reviwer_url: String,
 };
 
 module.exports = {
