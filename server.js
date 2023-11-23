@@ -34,7 +34,7 @@ app.post("/admin", async (req, res) => {
       return res.status(404).json({ error: "Username incorrect" });
     }
 
-    if (userId == process.env.key && pass == process.env.value) {
+    if (userId == process.env.key && pass != process.env.value) {
       return res.status(400).json({ error: "Password incorrect" });
     }
     if (userId == process.env.key && pass == process.env.value) {
