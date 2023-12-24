@@ -425,9 +425,6 @@ app.post("/editorialboard", (req, res) => {
   }
 });
 
-setInterval(async () => {
-  const res = await fetch(`https://bpit-journal-backend.onrender.com/`);
-}, 899990);
 
 let port = process.env.PORT || 3000;
 
